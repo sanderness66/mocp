@@ -316,6 +316,9 @@ static int alsa_read_mixer_raw (snd_mixer_elem_t *elem)
 				return -1;
 			}
 
+			if (vol >= 100) {
+				vol = 100;
+			}
 			assert (RANGE(0, vol, 100));
 
 #if 0
@@ -448,6 +451,9 @@ static void alsa_set_current_mixer ()
 	}
 
 	if (mixer_elem2 && (vol = alsa_read_mixer_raw (mixer_elem2)) != -1) {
+		if (vol >= 100) {
+			vol = 100;
+		}
 		assert (RANGE(0, vol, 100));
 		volume2 = vol;
 	}
