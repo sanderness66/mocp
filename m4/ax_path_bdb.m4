@@ -179,7 +179,7 @@ AX_PATH_BDB_STUFF DB_VERSION_MAJOR,DB_VERSION_MINOR,DB_VERSION_PATCH
       ]])
     ],[
       # Extract version from preprocessor output.
-      HEADER_VERSION=`eval "$ac_cpp conftest.$ac_ext" 2> /dev/null \
+      HEADER_VERSION=`eval "$ac_cpp -P conftest.$ac_ext" 2> /dev/null \
         | grep AX_PATH_BDB_STUFF | sed 's/[[^0-9,]]//g;s/,/./g;1q'`
     ],[])
 

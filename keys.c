@@ -204,8 +204,8 @@ static struct command commands[] = {
 		"toggle_percent",
 		"Switch on/off play time percentage",
 		CON_MENU,
-		{ -1 },
-		0
+		{CTRL('p'), -1 },
+		1
 	},
 	{
 		KEY_CMD_PLIST_ADD_FILE,

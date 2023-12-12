@@ -659,9 +659,9 @@ void options_init ()
 	                 "audio/aac(aac):audio/aacp(aac):audio/m4a(ffmpeg):"
 	                 "audio/wav(sndfile,*):"
 	                 "ogg(vorbis,*,ffmpeg):oga(vorbis,*,ffmpeg):ogv(ffmpeg):"
-	                 "application/ogg(vorbis):audio/ogg(vorbis):"
+	                 "application/ogg(vorbis,opus):audio/ogg(vorbis,opus):"
 	                 "flac(flac,*,ffmpeg):"
-	                 "opus(ffmpeg):"
+	                 "opus(opus,ffmpeg):"
 	                 "spx(speex)",
 	                 CHECK_FUNCTION);
 

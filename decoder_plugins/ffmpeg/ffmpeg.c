@@ -32,6 +32,7 @@
 #include <stdint.h>
 #include <errno.h>
 
+#include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/mathematics.h>
 #if HAVE_LIBAVUTIL_CHANNEL_LAYOUT_H
@@ -78,7 +79,7 @@ struct ffmpeg_data
 	AVIOContext *pb;
 	AVStream *stream;
 	AVCodecContext *enc;
-	AVCodec *codec;
+	const AVCodec *codec;
 
 	char *remain_buf;
 	int remain_buf_len;
@@ -761,8 +762,6 @@ static void *ffmpeg_open_internal (struct ffmpeg_data *data)
 	}
 
 	set_downmixing (data);
-	if (data->codec->capabilities & AV_CODEC_CAP_TRUNCATED)
-		data->enc->flags |= AV_CODEC_FLAG_TRUNCATED;
 
 	if (avcodec_open2 (data->enc, data->codec, NULL) < 0)
 	{
@@ -847,7 +846,7 @@ static int ffmpeg_can_decode (struct io_stream *stream)
 {
 	int res;
 	AVProbeData probe_data;
-	AVInputFormat *fmt;
+	const AVInputFormat *fmt;
 	char buf[8096 + AVPROBE_PADDING_SIZE] = {0};
 
 	res = io_peek (stream, buf, sizeof (buf));
@@ -1171,7 +1170,7 @@ static bool seek_in_stream (struct ffmpeg_data *data)
 static bool seek_in_stream (struct ffmpeg_data *data, int sec)
 #endif
 {
-	int rc, flags = AVSEEK_FLAG_ANY;
+	int rc;
 	int64_t seek_ts;
 
 #if SEEK_IN_DECODER
@@ -1197,10 +1196,8 @@ static bool seek_in_stream (struct ffmpeg_data *data, int sec)
 		seek_ts += data->stream->start_time;
 	}
 
-	if (data->stream->cur_dts > seek_ts)
-		flags |= AVSEEK_FLAG_BACKWARD;
-
-	rc = av_seek_frame (data->ic, data->stream->index, seek_ts, flags);
+	rc = av_seek_frame (data->ic, data->stream->index, seek_ts,
+	                    AVSEEK_FLAG_BACKWARD);
 	if (rc < 0) {
 		log_errno ("Seek error", rc);
 		return false;
@@ -1410,7 +1407,7 @@ static int ffmpeg_our_format_ext (const char *ext)
 
 static int ffmpeg_our_format_mime (const char *mime_type)
 {
-	AVOutputFormat *fmt;
+	const AVOutputFormat *fmt;
 
 	fmt = av_guess_format (NULL, NULL, mime_type);
 	return fmt ? 1 : 0;

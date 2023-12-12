@@ -16,6 +16,10 @@ if BUILD_vorbis
     SUBDIRS += vorbis
 endif
 
+if BUILD_opus
+    SUBDIRS += opus
+endif
+
 if BUILD_flac
     SUBDIRS += flac
 endif
