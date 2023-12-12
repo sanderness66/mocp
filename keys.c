@@ -272,7 +272,7 @@ static struct command commands[] = {
 		1
 	},
 	{
-		KEY_CMD_SEEK_FORWARD,
+		KEY_CMD_SEEK_FORWARD_S,
 		"seek_forward",
 		"Seek forward by n-s",
 		CON_MENU,
@@ -280,7 +280,7 @@ static struct command commands[] = {
 		1
 	},
 	{
-		KEY_CMD_SEEK_BACKWARD,
+		KEY_CMD_SEEK_BACKWARD_S,
 		"seek_backward",
 		"Seek backward by n-s",
 		CON_MENU,
@@ -416,7 +416,7 @@ static struct command commands[] = {
 		2
 	},
 	{
-		KEY_CMD_SEEK_FORWARD_5,
+		KEY_CMD_SEEK_FORWARD_M,
 		"seek_forward_fast",
 		"Silent seek forward by 5s",
 		CON_MENU,
@@ -424,11 +424,27 @@ static struct command commands[] = {
 		1
 	},
 	{
-		KEY_CMD_SEEK_BACKWARD_5,
+		KEY_CMD_SEEK_BACKWARD_M,
 		"seek_backward_fast",
 		"Silent seek backward by 5s",
 		CON_MENU,
 		{ '[', -1 },
+		1
+	},
+	{
+		KEY_CMD_SEEK_FORWARD_L,
+		"seek_forward_fast",
+		"Silent seek forward by 60s",
+		CON_MENU,
+		{ '}', -1 },
+		1
+	},
+	{
+		KEY_CMD_SEEK_BACKWARD_L,
+		"seek_backward_fast",
+		"Silent seek backward by 60s",
+		CON_MENU,
+		{ '{', -1 },
 		1
 	},
 	{

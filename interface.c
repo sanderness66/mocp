@@ -2572,41 +2572,6 @@ static void go_to_playing_file ()
 	}
 }
 
-/* Return the time like the standard time() function, but rounded i.e. if we
- * have 11.8 seconds, return 12 seconds. */
-static time_t rounded_time ()
-{
-	struct timespec exact_time;
-	time_t curr_time;
-
-	if (get_realtime (&exact_time) == -1)
-		interface_fatal ("get_realtime() failed: %s", xstrerror (errno));
-
-	curr_time = exact_time.tv_sec;
-	if (exact_time.tv_nsec > 500000000L)
-		curr_time += 1;
-
-	return curr_time;
-}
-
-/* Handle silent seek key. */
-static void seek_silent (const int sec)
-{
-	if (curr_file.state == STATE_PLAY && curr_file.file
-			&& !is_url(curr_file.file)) {
-		if (silent_seek_pos == -1) {
-			silent_seek_pos = curr_file.curr_time + sec;
-		}
-		else
-			silent_seek_pos += sec;
-
-		silent_seek_pos = CLAMP(0, silent_seek_pos, curr_file.total_time);
-
-		silent_seek_key_last = rounded_time ();
-		iface_set_curr_time (silent_seek_pos);
-	}
-}
-
 /* Move the current playlist item (direction: 1 - up, -1 - down). */
 static void move_item (const int direction)
 {
@@ -3233,11 +3198,11 @@ static void menu_key (const struct iface_key *k)
 			case KEY_CMD_MIXER_INC_1:
 				adjust_mixer (+1);
 				break;
-			case KEY_CMD_SEEK_BACKWARD:
-				seek (-options_get_int ("SeekTime"));
+			case KEY_CMD_SEEK_BACKWARD_S:
+				seek (-options_get_int ("SeekTimeS"));
 				break;
-			case KEY_CMD_SEEK_FORWARD:
-				seek (options_get_int ("SeekTime"));
+			case KEY_CMD_SEEK_FORWARD_S:
+				seek (options_get_int ("SeekTimeS"));
 				break;
 			case KEY_CMD_HELP:
 				iface_switch_to_help ();
@@ -3297,11 +3262,17 @@ static void menu_key (const struct iface_key *k)
 			case KEY_CMD_WRONG:
 				error ("Bad command");
 				break;
-			case KEY_CMD_SEEK_FORWARD_5:
-				seek_silent (options_get_int ("SilentSeekTime"));
+			case KEY_CMD_SEEK_FORWARD_M:
+				seek (options_get_int ("SeekTimeM"));
 				break;
-			case KEY_CMD_SEEK_BACKWARD_5:
-				seek_silent (-options_get_int ("SilentSeekTime"));
+			case KEY_CMD_SEEK_BACKWARD_M:
+				seek (-options_get_int ("SeekTimeM"));
+				break;
+			case KEY_CMD_SEEK_FORWARD_L:
+				seek (options_get_int ("SeekTimeL"));
+				break;
+			case KEY_CMD_SEEK_BACKWARD_L:
+				seek (-options_get_int ("SeekTimeL"));
 				break;
 			case KEY_CMD_VOLUME_10:
 				set_mixer (10);

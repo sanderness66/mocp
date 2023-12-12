@@ -647,8 +647,9 @@ void options_init ()
 	add_str  ("FastDir9", NULL, CHECK_NONE);
 	add_str  ("FastDir10", NULL, CHECK_NONE);
 
-	add_int  ("SeekTime", 1, CHECK_RANGE(1), 1, INT_MAX);
-	add_int  ("SilentSeekTime", 5, CHECK_RANGE(1), 1, INT_MAX);
+	add_int  ("SeekTimeS", 1, CHECK_RANGE(1), 1, INT_MAX);
+	add_int  ("SeekTimeM", 5, CHECK_RANGE(1), 1, INT_MAX);
+	add_int  ("SeekTimeL", 60, CHECK_RANGE(1), 1, INT_MAX);
 
 	add_list ("PreferredDecoders",
 	                 "aac(aac,ffmpeg):m4a(ffmpeg):"
