@@ -562,10 +562,10 @@ static bool is_seek_broken (struct ffmpeg_data *data)
 /* Downmix multi-channel audios to stereo. */
 static void set_downmixing (struct ffmpeg_data *data)
 {
-	if (av_get_channel_layout_nb_channels (data->enc->channel_layout) <= 2)
+	if ((data->enc->ch_layout.nb_channels) <= 2)
 		return;
 
-	data->enc->request_channel_layout = AV_CH_LAYOUT_STEREO;
+	av_channel_layout_from_mask(&data->enc->ch_layout, AV_CH_LAYOUT_STEREO);
 }
 
 static int ffmpeg_io_read_cb (void *s, uint8_t *buf, int count)
@@ -1128,16 +1128,16 @@ static int decode_packet (struct ffmpeg_data *data, AVPacket *pkt,
 		is_planar = av_sample_fmt_is_planar (data->enc->sample_fmt);
 		packed = (char *)frame->extended_data[0];
 		packed_size = frame->nb_samples * data->sample_width
-		                                * data->enc->channels;
+		                                * data->enc->ch_layout.nb_channels;
 
-		if (is_planar && data->enc->channels > 1) {
+		if (is_planar && data->enc->ch_layout.nb_channels > 1) {
 			int sample, ch;
 
 			packed = xmalloc (packed_size);
 
 			for (sample = 0; sample < frame->nb_samples; sample += 1) {
-				for (ch = 0; ch < data->enc->channels; ch += 1)
-					memcpy (packed + (sample * data->enc->channels + ch)
+				for (ch = 0; ch < data->enc->ch_layout.nb_channels; ch += 1)
+					memcpy (packed + (sample * data->enc->ch_layout.nb_channels + ch)
 					                         * data->sample_width,
 					        (char *)frame->extended_data[ch] + sample * data->sample_width,
 					        data->sample_width);
@@ -1235,7 +1235,7 @@ static int ffmpeg_decode (void *prv_data, char *buf, int buf_len,
 		return 0;
 
 	/* FFmpeg claims to always return native endian. */
-	sound_params->channels = data->enc->channels;
+	sound_params->channels = data->enc->ch_layout.nb_channels;
 	sound_params->rate = data->enc->sample_rate;
 	sound_params->fmt = data->fmt | SFMT_NE;
 
