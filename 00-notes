@@ -1,0 +1,26 @@
+== for the future:
+
+- search is just a filter for the current dir atm ->
+  - search: recurse from current dir
+  - search: recurse from MusicDir
+  - maybe:
+    - find ls(1) equiv in src -> read_directory()
+    - a) make that recursive  -> already exists
+    - b) make that optionally rooted from MusicDir
+    - and filtering will 'just work'?
+    - there already is a read_directory_recurr() used with playlists
+    - implement a) and b) as 'special playlists'?
+
+- delete function with confirmation prompt
+  - can't get it to work with confirmation prompt because that prompt seems to be asynchronous
+  - workaround to bind "rm -i" to F4
+  - might use whatever exec_command uses to do it to bind it to d key if not on playlist
+
+
+== patches:
+	mostly pulled from debian/ubuntu
+
+
+== to compile:
+	sudo apt-get build-dev moc
+	./configure -C --without-oss --without-sndio --without-jack --without-curl
