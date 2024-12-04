@@ -22,5 +22,5 @@
 
 
 == to compile:
-	sudo apt-get build-dev moc
+	sudo apt build-dep moc
 	./configure -C --without-oss --without-sndio --without-jack --without-curl
