@@ -3260,7 +3260,7 @@ static void menu_key (const struct iface_key *k)
 				go_dir_up ();
 				break;
 			case KEY_CMD_WRONG:
-				error ("Bad command");
+				// error ("Bad command");
 				break;
 			case KEY_CMD_SEEK_FORWARD_M:
 				seek (options_get_int ("SeekTimeM"));
