@@ -3688,6 +3688,7 @@ static void iface_refresh_screen ()
 		wnoutrefresh (info_win.win);
 		wnoutrefresh (main_win.win);
 	}
+	keypad (main_win.win, TRUE);
 	doupdate ();
 }
 
