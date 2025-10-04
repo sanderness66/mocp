@@ -16,11 +16,13 @@
   - workaround to bind "rm -i" to F4
   - might use whatever exec_command uses to do it to bind it to d key if not on playlist
 
+- cache seems buggy -> rewrite (with sqlite probably)
+
 
 == patches:
 	mostly pulled from debian/ubuntu
 
 
-== to compile:
+== to compile (if you're me):
 	sudo apt build-dep moc
-	./configure -C --without-oss --without-sndio --without-jack --without-curl
+	./configure -C --without-oss --without-sndio --without-jack --without-curl --disable-cache
