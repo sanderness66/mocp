@@ -25,4 +25,4 @@
 
 == to compile (if you're me):
 	sudo apt build-dep moc
-	./configure -C --without-oss --without-sndio --without-jack --without-curl --disable-cache
+	./configure -C --without-oss --without-sndio --without-jack --without-curl --disable-cache --without-rcc
