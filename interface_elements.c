@@ -3683,12 +3683,14 @@ static void iface_refresh_screen ()
 	if (iface_in_entry ()) {
 		wnoutrefresh (main_win.win);
 		wnoutrefresh (info_win.win);
+		keypad (info_win.win, TRUE);
 	}
 	else {
 		wnoutrefresh (info_win.win);
 		wnoutrefresh (main_win.win);
+		keypad (main_win.win, TRUE);
 	}
-	keypad (main_win.win, TRUE);
+	// keypad (main_win.win, TRUE);
 	doupdate ();
 }
 
